@@ -11,7 +11,7 @@ description: 小红书调研 — 搜索笔记、抓取详情/评论/图片 OCR�
 
 ## 快速开始（首次使用）
 
-前置：**Windows** · **Google Chrome** · **Python 3.9+** · 能访问 `xiaohongshu.com`
+前置：**Windows** / **Google Chrome** / **Python 3.9+** / 能访问 `xiaohongshu.com`
 
 ```powershell
 # 1) 装依赖（requirements.txt 在 scripts/ 下）
@@ -20,7 +20,7 @@ pip install -r scripts/requirements.txt
 # 2) 启动专用 Chrome 并登录小红书（登录态持久保存，只需做一次）
 python scripts/chrome_session.py --start
 #    → 在弹出的 Chrome 里扫码 / 手机号登录
-python scripts/chrome_session.py --status     # 应看到: ✅ CDP 在线: ... (port 9222)
+python scripts/chrome_session.py --status     # 应看到: CDP 在线: ... (port 9222)
 
 # 3) 跑第一条搜索
 python scripts/xhs_search.py --q "机器学习" --rows 5 --parallel 1
@@ -55,14 +55,14 @@ python scripts/chrome_session.py --stop
 
 | 参数 | 必填 | 默认 | 说明 |
 |------|:--:|------|------|
-| `--q` | ✅ | — | 搜索关键词（可重复） |
-| `--rows` | ❌ | 25 | 最大结果数（1-100） |
-| `--sort` | ❌ | 综合 | 综合 / 最新 / 最多点赞 / 最多评论 / 最多收藏 |
-| `--type` | ❌ | 不限 | 不限 / 视频 / 图文 |
-| `--time` | ❌ | 不限 | 不限 / 一天内 / 一周内 / 半年内 |
-| `--scope` | ❌ | 不限 | 不限 / 已看过 / 未看过 / 已关注 |
-| `--distance` | ❌ | 不限 | 不限 / 同城 / 附近 |
-| `--parallel` | ❌ | 2 | 并行关键词数（1-8） |
+| `--q` | 必填 | — | 搜索关键词（可重复） |
+| `--rows` | 可选 | 25 | 最大结果数（1-100） |
+| `--sort` | 可选 | 综合 | 综合 / 最新 / 最多点赞 / 最多评论 / 最多收藏 |
+| `--type` | 可选 | 不限 | 不限 / 视频 / 图文 |
+| `--time` | 可选 | 不限 | 不限 / 一天内 / 一周内 / 半年内 |
+| `--scope` | 可选 | 不限 | 不限 / 已看过 / 未看过 / 已关注 |
+| `--distance` | 可选 | 不限 | 不限 / 同城 / 附近 |
+| `--parallel` | 可选 | 2 | 并行关键词数（1-8） |
 
 **输出：** `{ filters, count, results, logPath }`，每条 result 含 `keyword`, `total`, `items[{ noteId, title, link, author, time, likes, type }]`，`link` 含 `xsec_token`（详情页要用）。
 
@@ -75,12 +75,12 @@ python scripts/chrome_session.py --stop
 
 | 参数 | 必填 | 默认 | 说明 |
 |------|:--:|------|------|
-| `--url` | ⚠️ | — | 笔记 URL（可重复）；与 stdin 管道二选一，至少给一个 |
-| `--max-comments` | ❌ | 30 | 每篇最大顶级评论数（1-80） |
-| `--reply-limit` | ❌ | 2 | 每条评论最多回复数（>1 会点「展开」抓取，耗时增加） |
-| `--no-ocr` | ❌ | — | 跳过 OCR（图文笔记仍会下载图片用于 OCR，加此项可大幅提速） |
-| `--media-dir` | ❌ | — | 媒体保存目录；不指定则图片临时 OCR 后删、视频只记 URL |
-| `--parallel` | ❌ | 2 | 并行 URL 数（1-8） |
+| `--url` | 二选一 | — | 笔记 URL（可重复）；与 stdin 管道二选一，至少给一个 |
+| `--max-comments` | 可选 | 30 | 每篇最大顶级评论数（1-80） |
+| `--reply-limit` | 可选 | 2 | 每条评论最多回复数（>1 会点「展开」抓取，耗时增加） |
+| `--no-ocr` | 可选 | — | 跳过 OCR（图文笔记仍会下载图片用于 OCR，加此项可大幅提速） |
+| `--media-dir` | 可选 | — | 媒体保存目录；不指定则图片临时 OCR 后删、视频只记 URL |
+| `--parallel` | 可选 | 2 | 并行 URL 数（1-8） |
 
 **输出：** `{ count, succeeded, failed, notes, logPath }`，每条 note 含 `noteId, type, title, author, date, desc, likes, collects, commentCount, comments[{ author, content, date, location, likes, replies }]`；图文另含 `ocrText`（和 `images`，仅 `--media-dir` 时），视频另含 `videoUrl`（`--media-dir` 时另含 `videoFile`）。
 
