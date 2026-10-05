@@ -1,6 +1,6 @@
 ---
 name: xhs-research
-description: 小红书调研 — 搜索笔记、抓取详情/评论/图片 OCR，CDP Chrome 自动化（反爬）
+description: 从小红书抓取笔记数据。当用户需要搜索小红书笔记（可按排序/类型/时间/范围/距离筛选），或抓取指定笔记的正文、评论与回复、图片 OCR 文本、视频直链时使用。基于 CDP 裸 Chrome 自动化，需 Google Chrome + 已登录的小红书账号。
 ---
 
 # 小红书 Research
