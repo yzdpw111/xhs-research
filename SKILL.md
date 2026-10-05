@@ -223,16 +223,26 @@ scripts/
   xhs_parser.py       结果后处理纯函数
   cdp_base.py         CDP 客户端 + Chrome 启动 + 人类行为模拟 + tab 生命周期 + 落盘
   ocr_images.py       RapidOCR 图片识别
-  chrome_session.py   登录会话管理（--start/--status/--stop）
+  chrome_session.py   登录会话管理（--start/--status/--stop/--url）
   config.py           集中配置（可用 XHS_* 覆盖）
   requirements.txt    依赖清单
 
-tests/                离线单测（不需要 Chrome / 网络）
+  tests/
+  test_*.py           离线单测（不需要 Chrome / 网络）
+  smoke_xhs.py        实机 smoke（需 Chrome 在线 + 已登录，会真实访问网络）
 ```
 
-跑测试（不需要登录）：
+跑测试：
 
 ```powershell
 pip install pytest
+
+# 离线单测（不需要登录/网络）—— 这条不会跑到 smoke_xhs.py
 python -m pytest tests -q
+
+# 实机 smoke（真实访问小红书，需 CDP 在线 + 已登录）
+# 文件名不是 test_ 前缀，必须显式指定文件才会运行
+python -m pytest tests/smoke_xhs.py -v -m smoke
 ```
+
+> **注意**：`smoke_xhs.py` 刻意不叫 `test_*.py`，所以 `pytest tests` **不会**自动收集它 —— 这是为了不让日常测试意外触发真实网络请求。要跑实机验证必须像上面那样显式指定文件。
